@@ -151,15 +151,15 @@ export const relativeDate = (dateString) => {
   if (secondsDifference < 60) {
     return 'Few seconds ago';
   } else if (minutesDifference < 60) {
-    return formatRelativeDateInPlural(minutesDifference, minute);
+    return formatRelativeDateInPlural(minutesDifference, 'minute');
   } else if (hoursDifference < 24) {
-    return formatRelativeDateInPlural(hoursDifference, hour);
+    return formatRelativeDateInPlural(hoursDifference, 'hour');
   } else if (daysDifference < 7) {
-    return formatRelativeDateInPlural(daysDifference, day);
+    return formatRelativeDateInPlural(daysDifference, 'day');
   } else if (weeksDifference < 4) {
-    return formatRelativeDateInPlural(weeksDifference, week);
+    return formatRelativeDateInPlural(weeksDifference, 'week');
   } else {
-    return formatRelativeDateInPlural(monthsDifference, month);
+    return formatRelativeDateInPlural(monthsDifference, 'month');
   }
 };
 
