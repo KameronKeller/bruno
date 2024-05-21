@@ -164,7 +164,7 @@ export const relativeDate = (dateString) => {
 };
 
 export const humanizeDate = (dateString) => {
-  const date = new Date(dateString);
+  const date = new Date(dateString.split('-'));
   return date.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
