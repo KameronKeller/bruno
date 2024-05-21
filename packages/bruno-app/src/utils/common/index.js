@@ -1,3 +1,8 @@
+/**
+ * Description:
+ * This file contains utility functions for common operations.
+ */
+
 import { customAlphabet } from 'nanoid';
 import xmlFormat from 'xml-formatter';
 
