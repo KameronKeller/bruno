@@ -17,6 +17,10 @@ const pathFoundInVariables = (path, obj) => {
   return value !== undefined;
 };
 
+const generateRandomClassName = (prefix) => {
+  return prefix + (Math.random() + 1).toString(36).substring(9);
+};
+
 export const defineCodeMirrorBrunoVariablesMode = (variables, mode) => {
   CodeMirror.defineMode('brunovariables', function (config, parserConfig) {
     let variablesOverlay = {
@@ -29,9 +33,9 @@ export const defineCodeMirrorBrunoVariablesMode = (variables, mode) => {
               stream.eat('}');
               let found = pathFoundInVariables(word, variables);
               if (found) {
-                return 'variable-valid random-' + (Math.random() + 1).toString(36).substring(9);
+                return generateRandomClassName('variable-valid random-');
               } else {
-                return 'variable-invalid random-' + (Math.random() + 1).toString(36).substring(9);
+                return generateRandomClassName('variable-invalid random-');
               }
               // Random classname added so adjacent variables are not rendered in the same SPAN by CodeMirror.
             }
