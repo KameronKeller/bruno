@@ -6,6 +6,14 @@
 import { customAlphabet } from 'nanoid';
 import xmlFormat from 'xml-formatter';
 
+const isInvalidString = (str) => {
+  return !str || !str.length || typeof str !== 'string';
+};
+
+const formatRelativeDateInPlural = (difference, unit) => {
+  return `${difference} ${unit}${difference > 1 ? 's' : ''} ago`;
+};
+
 // a customized version of nanoid without using _ and -
 export const uuid = () => {
   // https://github.com/ai/nanoid/blob/main/url-alphabet/index.js
@@ -32,7 +40,7 @@ export const waitForNextTick = () => {
 };
 
 export const safeParseJSON = (str) => {
-  if (!str || !str.length || typeof str !== 'string') {
+  if (isInvalidString(str)) {
     return str;
   }
   try {
@@ -65,7 +73,7 @@ export const convertToCodeMirrorJson = (obj) => {
 };
 
 export const safeParseXML = (str, options) => {
-  if (!str || !str.length || typeof str !== 'string') {
+  if (isInvalidString(str)) {
     return str;
   }
   try {
@@ -89,6 +97,8 @@ export const normalizeFileName = (name) => {
 
 export const getContentType = (headers) => {
   const headersArray = typeof headers === 'object' ? Object.entries(headers) : [];
+  const jsonContentTypeRegex = /^[\w\-]+\/([\w\-]+\+)?json/;
+  const xmlContentTypeRegex = /^[\w\-]+\/([\w\-]+\+)?xml/;
 
   if (headersArray.length > 0) {
     let contentType = headersArray
@@ -97,9 +107,9 @@ export const getContentType = (headers) => {
         return header[1];
       });
     if (contentType && contentType.length) {
-      if (typeof contentType[0] == 'string' && /^[\w\-]+\/([\w\-]+\+)?json/.test(contentType[0])) {
+      if (typeof contentType[0] == 'string' && jsonContentTypeRegex.test(contentType[0])) {
         return 'application/ld+json';
-      } else if (typeof contentType[0] == 'string' && /^[\w\-]+\/([\w\-]+\+)?xml/.test(contentType[0])) {
+      } else if (typeof contentType[0] == 'string' && xmlContentTypeRegex.test(contentType[0])) {
         return 'application/xml';
       }
 
@@ -111,11 +121,11 @@ export const getContentType = (headers) => {
 };
 
 export const startsWith = (str, search) => {
-  if (!str || !str.length || typeof str !== 'string') {
+  if (isInvalidString(str)) {
     return false;
   }
 
-  if (!search || !search.length || typeof search !== 'string') {
+  if (isInvalidString(search)) {
     return false;
   }
 
@@ -141,15 +151,15 @@ export const relativeDate = (dateString) => {
   if (secondsDifference < 60) {
     return 'Few seconds ago';
   } else if (minutesDifference < 60) {
-    return `${minutesDifference} minute${minutesDifference > 1 ? 's' : ''} ago`;
+    return formatRelativeDateInPlural(minutesDifference, minute);
   } else if (hoursDifference < 24) {
-    return `${hoursDifference} hour${hoursDifference > 1 ? 's' : ''} ago`;
+    return formatRelativeDateInPlural(hoursDifference, hour);
   } else if (daysDifference < 7) {
-    return `${daysDifference} day${daysDifference > 1 ? 's' : ''} ago`;
+    return formatRelativeDateInPlural(daysDifference, day);
   } else if (weeksDifference < 4) {
-    return `${weeksDifference} week${weeksDifference > 1 ? 's' : ''} ago`;
+    return formatRelativeDateInPlural(weeksDifference, week);
   } else {
-    return `${monthsDifference} month${monthsDifference > 1 ? 's' : ''} ago`;
+    return formatRelativeDateInPlural(monthsDifference, month);
   }
 };
 
