@@ -1,3 +1,8 @@
+/**
+ * Description:
+ * This file contains utility functions for CodeMirror.
+ */
+
 import get from 'lodash/get';
 
 let CodeMirror;
